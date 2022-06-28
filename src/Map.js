@@ -83,21 +83,11 @@ const hexToRgb = (hex) => {
 
 const Map = ({ props }) => {
   const [viewstate, setViewstate] = useState({
-    type: "Feature",
-    properties: {},
-    geometry: {
-      type: "LineString",
-      coordinates: [
-        [121.86309814453124, 15.276236655384137],
-        [121.14898681640626, 15.16227572090282],
-        [121.36596679687499, 14.692538153744145],
-        [121.88507080078125, 14.453298590545614],
-        [121.9207763671875, 14.721760679027714],
-        [121.38519287109375, 14.979279919478266],
-        [121.640625, 15.077427674847987],
-        [121.87957763671874, 15.077427674847987],
-      ],
-    },
+    latitude: 12.473718352618263,
+    longitude: 122.15970582093894,
+    zoom: 5,
+    bearing: 0,
+    pitch: 0,
   });
 
   return (
@@ -110,7 +100,7 @@ const Map = ({ props }) => {
             filled: true,
             lineWidthMinPixels: 1,
             pointRadiusMinPixels: 4,
-            getRadius: 10,
+            getPointRadius: 10,
             getFillColor: (d) => hexToRgb(d.properties.color),
             getLineColor: (d) => hexToRgb(d.properties.color),
             pickable: true,
