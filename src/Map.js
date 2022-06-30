@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import DeckGL from "@deck.gl/react";
 import { GeoJsonLayer } from "@deck.gl/layers";
-// import { MVTLayer } from "@deck.gl/geo-layers";
-// import { BitmapLayer } from "@deck.gl/layers";
 // import { DataFilterExtension } from "@deck.gl/extensions";
 // import { FlyToInterpolator } from "deck.gl";
 import { Map as StaticMap, MapProvider } from "react-map-gl";
@@ -115,26 +113,6 @@ const Map = ({ props }) => {
             getLineColor: (d) => hexToRgb(d.properties.color),
             pickable: true,
           }),
-          // new MVTLayer({
-          //   id: "mvt",
-          //   data: "https://bq2.cartocdn.com/bqtiler?y={y}&x={x}&z={z}&p=0_16_50910_55815_28387_32608_4000_1&t=tm-geospatial.bqtiler.distance_populationv4",
-          //   filled: true,
-          //   getFillColor: (d) => {
-          //     return d.properties.population > 1000
-          //       ? hexToRgb("#ffdd00")
-          //       : hexToRgb("#00ff00");
-          //   },
-          //   pickable: true,
-          // }),
-          // new BitmapLayer({
-          //   id: "bitmap",
-          //   bounds: [
-          //     120.84686279296874, 14.425370443522059, 121.35772705078125,
-          //     14.78152182269929,
-          //   ],
-          //   image:
-          //     "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-districts.png",
-          // }),
         ]}
         initialViewState={viewstate}
         onViewStateChange={({ viewState }) => setViewstate(viewState)}
