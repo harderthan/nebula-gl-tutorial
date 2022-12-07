@@ -6,26 +6,30 @@ import { Deck, OrthographicView, FirstPersonView, MapView } from '@deck.gl/core'
 import ScatterPlotLayer from './Layres/ScatterPlotLayer';
 import MyLineLayer from './Layres/MyLineLayer';
 
+import { Map as StaticMap, MapProvider } from "react-map-gl";
+import maplibregl from "maplibre-gl";
+import { View } from 'deck.gl';
+
 // DeckGL react component
 function App() {
-  const views = [
-    new OrthographicView({ 
-      id: 'ortho', 
-      controller: true
-    }),
-    new FirstPersonView({
-      id: 'first-person',
-      controller: true
-    }),
-    new MapView({
-      id: 'mini-map',
-      x: '80%',
-      y: '80%',
-      height: '15%',
-      width: '15%',
-      clear: true,
-      controller: true
-    })]
+  // const views = [
+  //   new OrthographicView({
+  //     id: 'ortho',
+  //     controller: true
+  //   }),
+  //   new FirstPersonView({
+  //     id: 'first-person',
+  //     controller: true
+  //   }),
+  //   new MapView({
+  //     id: 'mini-map',
+  //     x: '80%',
+  //     y: '80%',
+  //     height: '15%',
+  //     width: '15%',
+  //     clear: true,
+  //     controller: true
+  //   })]
 
   const layers = [
     MyLineLayer,
@@ -40,7 +44,7 @@ function App() {
     zoom: 10
   });
 
-  const onViewStateChange = useCallback(({viewId, viewState}) => {
+  const onViewStateChange = useCallback(({ viewId, viewState }) => {
     if (viewId === 'main') {
       setViewStates(currentViewStates => ({
         main: viewState,
@@ -62,18 +66,38 @@ function App() {
     }
   }, []);
 
-  return <DeckGL
-    // views={new OrthographicView()}
-    views={[
-      new MapView({id: 'main', controller: true}),
-      new MapView({id: 'minimap', x: 10, y: 10, width: '20%', height: '20%', controller: true})
-    ]}
-    initialViewState={viewState}
-    onViewStateChange={onViewStateChange}
-    // onViewStateChange={e => setViewState(e.viewState)}
-    controller={true}
-    layers={layers} >
-  </DeckGL>;
+  const toolTip = ({ object }) => object && `${object.name}\n${object.address}`
+  const layerFilter = ({ layer, viewport }) => {
+    return layer.id === `tiles-for-${viewport.id}`;
+  }
+
+  return (
+  <div>
+    <DeckGL
+      views={[
+        new MapView({ id: 'main', controller: true }),
+        new MapView({ id: 'minimap', x: 10, y: 10, width: '20%', height: '20%', controller: true }),
+      ]}
+      // layerFilter={layerFilter}
+      initialViewState={viewState}
+      onViewStateChange={onViewStateChange}
+      controller={true}
+      layers={layers}
+      getTooltip={toolTip}
+    >
+      <View id="minimap">
+        <StaticMap
+          mapLib={maplibregl}
+          disableTokenWarning={true}
+          mapStyle={
+            "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json"
+          }
+        />
+      </View>
+
+    </DeckGL>
+  </div>
+  );
 }
 
 export default App;
